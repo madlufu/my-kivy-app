@@ -1,7 +1,7 @@
 [app]
-title = MyKivyApp
-package.name = mykivyapp
-package.domain = com.varunesh
+title = Mycorrected
+package.name = mycorrected
+package.domain = com.lufu
 source.dir = .
 version = 0.1
 requirements = python3,kivy,sqlite3
