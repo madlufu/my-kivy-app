@@ -1,48 +1,29 @@
-name: Android APK (Buildozer)
+#albumine gore duzeltilmis kalsiyum hesaplama 
+print("=" * 80)
+print("\t\t\tDüzeltilmiş Kalsiyum Hesaplama")
+print("=" * 80, "\n")
+albumin=float(input("Serum Albumin düzeyini giriniz g/dl olarak:  "))
+if float(albumin >4) :
+	print("-" * 80)
+	print("Albümin degerini muhtemelen kalsiyum degeri olarak girdiniz lutfen tekrar deneyin")
+	print("-" * 80)
+	albumin=float(input("Serum Albumin düzeyini giriniz g/dl olarak:  "))
+			
+			
+else:
+	
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+	print("-" * 80)
+calcium_serum=float(input("Serum Kalsiyum düzeyini giriniz mg/dl olarak:  "))
+print("-" * 80)
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
+corrected_calcium=float((calcium_serum+((0.8)*(4-albumin))))
 
-    # तैयार Buildozer Docker image का उपयोग
-    container:
-      image: kivy/buildozer:latest
-      options: --user root  # root के साथ चलाएँ ताकि SDK/NDK डाउनलोड में दिक्कत न हो
-
-    env:
-      # pip को कभी भी --user उपयोग न करने दें
-      PIP_USER: "0"
-      # buildozer के कुछ संस्करण इस वैरिएबल को भी देखते हैं
-      BUILDOZER_USE_PIP_USER: "0"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # सिर्फ safety के लिए: spec में warn_on_root/write जोड़ते हैं (idempotent)
-      - name: Disable root warning in spec
-        run: |
-          if ! grep -q "^\[buildozer\]" buildozer.spec; then
-            printf "\n[buildozer]\n" >> buildozer.spec
-          fi
-          sed -i '/^\[buildozer\]/,$!b;/^\[buildozer\]/,/^\[/ s/^warn_on_root.*/warn_on_root = 0/' buildozer.spec || true
-          sed -i '/^\[buildozer\]/,/^\[/ s/^use_pip_user.*/use_pip_user = 0/' buildozer.spec || echo "use_pip_user = 0" >> buildozer.spec
-
-      - name: Upgrade pip (inside container)
-        run: python -m pip install --upgrade pip
-
-      - name: Build debug APK
-        run: |
-          buildozer android debug --accept-sdk-license
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-app-apk
-          path: bin/*.apk
+if float(corrected_calcium < 8.5):
+	print("Albümine göre düzeltilmiş kalsiyum düzeyi:  ",corrected_calcium,"mg/dl 'dir.\nDüzeltilmiş Kalsiyum değeri referans araliğin altındadır. (Ref: 8.5-10.5) ")
+elif float(corrected_calcium > 10.5):
+	print("Albümine göre düzeltilmiş kalsiyum düzeyi:  ",corrected_calcium,"mg/dl 'dir.\nDüzeltilmiş Kalsiyum değeri referans araliğin üstündedir. (Ref: 8.5-10.5)")
+else:
+	print("Albümine göre düzeltilmiş kalsiyum düzeyi:  ",corrected_calcium,"mg/dl 'dir.\n Kalsiyum düzeyi referans değerler arasındadır.  (Ref:8.5-10.5)")
+print("=" * 80)
+print("=" * 80)
