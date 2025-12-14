@@ -27,5 +27,4 @@ else:
 	print("Albümine göre düzeltilmiş kalsiyum düzeyi:  ",corrected_calcium,"mg/dl 'dir.\n Kalsiyum düzeyi referans değerler arasındadır.  (Ref:8.5-10.5)")
 print("=" * 80)
 print("=" * 80)
-
 # trigger build
